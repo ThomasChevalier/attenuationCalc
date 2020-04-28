@@ -1,0 +1,6 @@
+beautifulsoup4
+skyfield
+PyOpenGL
+glfw
+pyglm
+Pillow

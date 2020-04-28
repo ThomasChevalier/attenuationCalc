@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Skyfield data
+de421.bsp
+deltat.data
+deltat.preds
+Leap_Second.dat
+
+# Application data
+.tle_sat
+output*.csv
