@@ -115,15 +115,16 @@ def trajectory(context):
     data = []  # List of list, [time, dist1, dist2, ..., dist N, minimum dist, minimum name, path_loss]
 
     with open(trajectory_file, 'r') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
+        reader = csv.reader(csvfile, delimiter=',', quotechar='\"')
         header = next(reader, None)
         altitude_index, longitude_index, latitude_index, time_index = header_indexes(header, ["altitude", "longitude", "latitude", "time"])
 
         for row in reader:
+            tofloat = lambda s : float(s.replace(',','.'))
             try:
-                altitude, longitude, latitude, rela_time = float(row[altitude_index]), float(row[longitude_index]), float(row[latitude_index]), float(row[time_index])
-            except ValueError:
-                raise RuntimeError("Ill-formed trajectory file.")
+                altitude, longitude, latitude, rela_time = tofloat(row[altitude_index]), tofloat(row[longitude_index]), tofloat(row[latitude_index]), tofloat(row[time_index])
+            except ValueError as e:
+                raise RuntimeError("Ill-formed trajectory file ({}).".format(e))
             epoch_time = timestamp + rela_time
             new_time = datetime.datetime.utcfromtimestamp(epoch_time)
             time = ts.utc(new_time.year, new_time.month, new_time.day, new_time.hour, new_time.minute, new_time.second)
